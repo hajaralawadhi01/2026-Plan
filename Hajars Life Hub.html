@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hajar's Life Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Public+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --bg:#F7F5EF;
+  --surface:#FFFFFF;
+  --surface-2:#F1EEE2;
+  --surface-3:#EAE6D6;
+  --border:#E1DBC7;
+  --text:#25261E;
+  --text-muted:#6B6A57;
+  --text-faint:#96937C;
+  --shadow:0 1px 2px rgba(37,38,30,.05), 0 10px 28px -14px rgba(37,38,30,.22);
+  --shadow-lg:0 4px 10px rgba(37,38,30,.08), 0 24px 48px -18px rgba(37,38,30,.32);
+  --radius-sm:8px;
+  --radius:14px;
+  --radius-lg:22px;
+
+  --hub:#3B5A52; --hub-soft:#E7EEE9; --hub-dark:#26443B;
+  --success:#2F9E5C; --success-soft:#E4F5EA;
+  --warning:#C9862B; --warning-soft:#FBF0DF;
+  --danger:#C94F5E; --danger-soft:#FBE7EA;
+
+  --accent:var(--hub); --accent-soft:var(--hub-soft); --accent-dark:var(--hub-dark); --accent2:var(--hub);
+
+  --p1:#2F7D4F; --p1-soft:#E4F3E9; --p1-dark:#1F5636;
+  --p2:#0F7A6C; --p2-soft:#E1F3EF; --p2-dark:#0B5B50; --p2b:#B8860B; --p2b-soft:#F7EDD6;
+  --p3:#0E7490; --p3-soft:#E1F2F6; --p3-dark:#0A5568;
+  --p4:#BC5B6B; --p4-soft:#FBEAEC; --p4-dark:#8F3F4C;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15170F; --surface:#1E2118; --surface-2:#262A1E; --surface-3:#2E331F;
+    --border:#363B2A; --text:#ECEADD; --text-muted:#A8A68F; --text-faint:#75765E;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
+    --shadow-lg:0 6px 16px rgba(0,0,0,.45), 0 30px 60px -20px rgba(0,0,0,.7);
+    --hub:#83AC98; --hub-soft:#1D2B23; --hub-dark:#BFDBCB;
+    --success:#59C084; --success-soft:#17301F;
+    --warning:#E0A64A; --warning-soft:#332711;
+    --danger:#E2818E; --danger-soft:#332025;
+    --p1:#63BC85; --p1-soft:#173625; --p1-dark:#BEE5CE;
+    --p2:#4FBBA8; --p2-soft:#12352F; --p2-dark:#B7E7DD; --p2b:#DDB25C; --p2b-soft:#332711;
+    --p3:#57B7D4; --p3-soft:#0F2E38; --p3-dark:#BCE5F1;
+    --p4:#E38B99; --p4-soft:#33202A; --p4-dark:#F4C4CC;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15170F; --surface:#1E2118; --surface-2:#262A1E; --surface-3:#2E331F;
+  --border:#363B2A; --text:#ECEADD; --text-muted:#A8A68F; --text-faint:#75765E;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.6);
+  --shadow-lg:0 6px 16px rgba(0,0,0,.45), 0 30px 60px -20px rgba(0,0,0,.7);
+  --hub:#83AC98; --hub-soft:#1D2B23; --hub-dark:#BFDBCB;
+  --success:#59C084; --success-soft:#17301F;
+  --warning:#E0A64A; --warning-soft:#332711;
+  --danger:#E2818E; --danger-soft:#332025;
+  --p1:#63BC85; --p1-soft:#173625; --p1-dark:#BEE5CE;
+  --p2:#4FBBA8; --p2-soft:#12352F; --p2-dark:#B7E7DD; --p2b:#DDB25C; --p2b-soft:#332711;
+  --p3:#57B7D4; --p3-soft:#0F2E38; --p3-dark:#BCE5F1;
+  --p4:#E38B99; --p4-soft:#33202A; --p4-dark:#F4C4CC;
+}
+
+/* page accent context */
+.page-dashboard{ --accent:var(--hub); --accent-soft:var(--hub-soft); --accent-dark:var(--hub-dark); --accent2:var(--hub); }
+.page-p1{ --accent:var(--p1); --accent-soft:var(--p1-soft); --accent-dark:var(--p1-dark); --accent2:var(--p1); }
+.page-p2{ --accent:var(--p2); --accent-soft:var(--p2-soft); --accent-dark:var(--p2-dark); --accent2:var(--p2b); }
+.page-p3{ --accent:var(--p3); --accent-soft:var(--p3-soft); --accent-dark:var(--p3-dark); --accent2:var(--p3); }
+.page-p4{ --accent:var(--p4); --accent-soft:var(--p4-soft); --accent-dark:var(--p4-dark); --accent2:var(--p4); }
+
+/* ============================================================
+   RESET / BASE
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg); color:var(--text);
+  font-family:"Public Sans",-apple-system,BlinkMacSystemFont,sans-serif;
+  font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  display:flex; min-height:100vh;
+}
+h1,h2,h3,h4{ font-family:"Fraunces",Georgia,serif; font-weight:600; text-wrap:balance; margin:0; color:var(--text); }
+p{margin:0;}
+a{color:inherit;}
+button,input,textarea,select{ font-family:inherit; font-size:inherit; color:inherit; }
+button{cursor:pointer;}
+::selection{ background:var(--accent-soft); color:var(--accent-dark); }
+.mono{ font-family:"IBM Plex Mono",ui-monospace,monospace; font-variant-numeric:tabular-nums; }
+.visually-hidden{ position:absolute; width:1px;height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:4px; }
+@media (prefers-reduced-motion: reduce){ *{ animation-duration:.001ms !important; transition-duration:.001ms !important; } }
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+#app{ display:flex; width:100%; min-height:100vh; }
+
+.sidebar{
+  width:260px; flex:0 0 260px; background:var(--surface);
+  border-right:1px solid var(--border); display:flex; flex-direction:column;
+  padding:22px 0 18px; position:sticky; top:0; height:100vh; overflow-y:auto; z-index:40;
+}
+.brand{ display:flex; align-items:baseline; gap:8px; padding:0 22px 20px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+.brand-mark{ font-family:"Fraunces",serif; font-weight:600; font-size:1.5rem; font-style:italic; color:var(--hub-dark); }
+.brand-sub{ font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--text-faint); }
+
+.nav{ display:flex; flex-direction:column; gap:3px; padding:0 10px; }
+.nav-item{
+  display:flex; align-items:center; gap:11px; width:100%; text-align:left;
+  background:transparent; border:none; border-left:4px solid transparent;
+  border-radius:0 10px 10px 0; padding:10px 12px 10px 10px;
+  color:var(--text-muted); font-weight:600; font-size:.87rem;
+  transition:background .12s ease,color .12s ease,border-color .12s ease;
+}
+.nav-item:hover{ background:var(--surface-2); color:var(--text); }
+.nav-item.active{ background:var(--accent-soft); color:var(--accent-dark); border-left-color:var(--accent); }
+.nav-item .dot{ width:9px; height:9px; border-radius:50%; flex:0 0 auto; background:var(--dot,var(--hub)); }
+.nav-item .ic{ width:18px;height:18px; flex:0 0 auto; display:flex; }
+.nav-item .ic svg{ width:100%; height:100%; }
+.nav-1 .dot{ background:var(--p1); } .nav-2 .dot{ background:var(--p2); }
+.nav-3 .dot{ background:var(--p3); } .nav-4 .dot{ background:var(--p4); }
+.nav-0 .dot{ background:var(--hub); }
+
+.sidebar-foot{ margin-top:auto; padding:16px 22px 0; border-top:1px solid var(--border); }
+.storage-note{ font-size:.72rem; color:var(--text-faint); line-height:1.5; }
+
+.main-col{ flex:1 1 auto; min-width:0; display:flex; flex-direction:column; }
+
+.topbar{
+  position:sticky; top:0; z-index:30; display:flex; align-items:center; justify-content:space-between;
+  gap:16px; padding:16px 28px; background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(8px); border-bottom:1px solid var(--border);
+}
+.topbar-left{ display:flex; align-items:center; gap:14px; min-width:0; }
+.hamburger{ display:none; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); width:36px;height:36px; align-items:center; justify-content:center; flex:0 0 auto; }
+.hamburger svg{ width:18px;height:18px; }
+.page-heading{ min-width:0; }
+.page-heading h1{ font-size:1.5rem; line-height:1.2; }
+.page-heading .sub{ font-size:.8rem; color:var(--text-muted); margin-top:2px; }
+.topbar-right{ display:flex; align-items:center; gap:10px; flex:0 0 auto; }
+
+.main{ flex:1 1 auto; padding:24px 28px 60px; }
+.section{ margin-bottom:30px; }
+.section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
+.section-head h2{ font-size:1.15rem; }
+.section-head .desc{ font-size:.8rem; color:var(--text-muted); }
+
+.overlay{ position:fixed; inset:0; background:rgba(20,20,14,.45); backdrop-filter:blur(1px); z-index:45; display:none; }
+.overlay.show{ display:block; }
+
+/* ============================================================
+   PRIMITIVES
+   ============================================================ */
+.grid-3{ display:grid; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); gap:16px; }
+.grid-2{ display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:16px; }
+.stack{ display:flex; flex-direction:column; gap:10px; }
+.row{ display:flex; align-items:center; gap:10px; }
+.row.wrap{ flex-wrap:wrap; }
+.between{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
+
+.card{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:18px; }
+.card.pad-sm{ padding:14px; }
+.card-title{ font-family:"Fraunces",serif; font-weight:600; font-size:1.02rem; }
+.card-eyebrow{ font-size:.68rem; letter-spacing:.09em; text-transform:uppercase; color:var(--accent-dark); font-weight:700; }
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  border-radius:var(--radius-sm); border:1px solid var(--border); background:var(--surface);
+  color:var(--text); font-weight:600; font-size:.83rem; padding:8px 14px;
+  transition:background .12s, border-color .12s, transform .05s, color .12s;
+}
+.btn:hover{ background:var(--surface-2); }
+.btn:active{ transform:translateY(1px); }
+.btn-primary{ background:var(--accent); border-color:var(--accent); color:#fff; }
+.btn-primary:hover{ filter:brightness(1.07); background:var(--accent); }
+.btn-ghost{ background:transparent; border-color:transparent; }
+.btn-ghost:hover{ background:var(--surface-2); }
+.btn-danger{ color:var(--danger); }
+.btn-sm{ padding:5px 10px; font-size:.75rem; }
+.btn-icon{ width:32px; height:32px; padding:0; flex:0 0 auto; }
+.btn-icon svg{ width:15px;height:15px; }
+.btn svg{ width:15px; height:15px; }
+.btn:disabled{ opacity:.45; cursor:not-allowed; }
+
+.fab{
+  position:fixed; right:26px; bottom:26px; z-index:35; width:54px; height:54px; border-radius:50%;
+  background:var(--accent); color:#fff; border:none; box-shadow:var(--shadow-lg);
+  display:none; align-items:center; justify-content:center;
+}
+.fab svg{ width:22px;height:22px; }
+
+.chip{ display:inline-flex; align-items:center; gap:5px; padding:3px 10px; border-radius:999px; font-size:.72rem; font-weight:700; background:var(--accent-soft); color:var(--accent-dark); white-space:nowrap; }
+.chip.status-present, .chip.status-done, .chip.status-posted, .chip.status-completed{ background:var(--success-soft); color:var(--success); }
+.chip.status-absent, .chip.status-overdue{ background:var(--danger-soft); color:var(--danger); }
+.chip.status-excused, .chip.status-pending, .chip.status-idea, .chip.status-draft{ background:var(--warning-soft); color:var(--warning); }
+.chip.status-inprogress, .chip.status-reading, .chip.status-scheduled, .chip.status-active{ background:var(--accent-soft); color:var(--accent-dark); }
+.chip-outline{ background:transparent; border:1px solid var(--border); color:var(--text-muted); }
+
+.progress{ height:8px; background:var(--surface-3); border-radius:999px; overflow:hidden; }
+.progress > span{ display:block; height:100%; background:var(--accent); border-radius:999px; transition:width .25s ease; }
+
+.empty{ text-align:center; padding:28px 16px; color:var(--text-faint); font-size:.85rem; }
+.empty svg{ width:26px;height:26px; margin:0 auto 8px; opacity:.5; display:block; }
+
+.table-wrap{ overflow-x:auto; border:1px solid var(--border); border-radius:var(--radius); }
+table{ width:100%; border-collapse:collapse; min-width:560px; }
+thead th{ text-align:left; font-size:.7rem; letter-spacing:.06em; text-transform:uppercase; color:var(--text-faint); font-weight:700; padding:10px 14px; background:var(--surface-2); border-bottom:1px solid var(--border); white-space:nowrap; }
+tbody td{ padding:11px 14px; border-bottom:1px solid var(--border); font-size:.86rem; vertical-align:middle; }
+tbody tr:last-child td{ border-bottom:none; }
+tbody tr:hover{ background:var(--surface-2); }
+
+.kanban{ display:flex; gap:14px; overflow-x:auto; padding-bottom:6px; }
+.kanban-col{ flex:0 0 270px; background:var(--surface-2); border-radius:var(--radius); padding:12px; display:flex; flex-direction:column; gap:10px; }
+.kanban-col-head{ display:flex; align-items:center; justify-content:space-between; padding:2px 4px; }
+.kanban-card{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 12px; font-size:.82rem; }
+
+.stepper{ display:flex; flex-direction:column; gap:0; }
+.step{ display:flex; gap:14px; }
+.step-track{ display:flex; flex-direction:column; align-items:center; }
+.step-dot{ width:26px; height:26px; border-radius:50%; border:2px solid var(--border); background:var(--surface); display:flex; align-items:center; justify-content:center; flex:0 0 auto; font-size:.7rem; font-weight:700; color:var(--text-faint); }
+.step-line{ width:2px; flex:1; background:var(--border); min-height:26px; }
+.step.done .step-dot{ background:var(--accent); border-color:var(--accent); color:#fff; }
+.step.inprogress .step-dot{ border-color:var(--accent); color:var(--accent-dark); }
+.step.done .step-line{ background:var(--accent); }
+.step-body{ padding-bottom:20px; flex:1; min-width:0; }
+
+.avatar-num{ width:22px;height:22px;border-radius:6px;background:var(--accent-soft); color:var(--accent-dark); font-size:.65rem; font-weight:800; display:inline-flex; align-items:center; justify-content:center; }
+
+textarea, input[type=text], input[type=number], input[type=date], input[type=url], select{
+  width:100%; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm);
+  padding:9px 11px; font-size:.85rem; color:var(--text);
+}
+textarea{ resize:vertical; min-height:70px; font-family:inherit; }
+label{ font-size:.75rem; font-weight:700; color:var(--text-muted); display:block; margin-bottom:5px; }
+.field{ margin-bottom:14px; }
+.field-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+.modal-wrap{ position:fixed; inset:0; z-index:60; display:none; align-items:flex-start; justify-content:center; overflow-y:auto; padding:6vh 16px; }
+.modal-wrap.show{ display:flex; }
+.modal-backdrop{ position:fixed; inset:0; background:rgba(18,18,12,.5); backdrop-filter:blur(2px); }
+.modal{ position:relative; width:100%; max-width:480px; background:var(--surface); border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); padding:24px; border:1px solid var(--border); }
+.modal.confirm{ max-width:380px; }
+.modal-head{ display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px; gap:10px; }
+.modal-head h3{ font-size:1.15rem; }
+.modal-close{ background:transparent; border:none; color:var(--text-faint); width:28px;height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:0 0 auto; }
+.modal-close:hover{ background:var(--surface-2); }
+.modal-actions{ display:flex; justify-content:flex-end; gap:8px; margin-top:18px; }
+.modal p.msg{ font-size:.88rem; color:var(--text-muted); line-height:1.55; }
+
+.toast-stack{ position:fixed; top:16px; right:16px; z-index:80; display:flex; flex-direction:column; gap:8px; }
+.toast{ background:var(--text); color:var(--bg); font-size:.8rem; font-weight:600; padding:10px 16px; border-radius:var(--radius-sm); box-shadow:var(--shadow-lg); opacity:0; transform:translateY(-6px); transition:opacity .18s, transform .18s; }
+.toast.show{ opacity:1; transform:translateY(0); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 980px){
+  .sidebar{ position:fixed; left:0; top:0; transform:translateX(-100%); transition:transform .2s ease; box-shadow:var(--shadow-lg); }
+  .sidebar.open{ transform:translateX(0); }
+  .hamburger{ display:flex; }
+  .fab{ display:flex; }
+  .main{ padding:18px 16px 90px; }
+  .topbar{ padding:14px 16px; }
+}
+@media (min-width: 981px){
+  .fab{ display:none !important; }
+}
+</style>
+</head>
+<body class="page-dashboard">
+
+<div id="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="brand-mark">Hub</span>
+      <span class="brand-sub">Life Organizer</span>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="sidebar-foot">
+      <p class="storage-note">Saved automatically to this browser's local storage. Nothing leaves your device.</p>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay" data-action="toggle-sidebar"></div>
+
+  <div class="main-col">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" id="hamburgerBtn" data-action="toggle-sidebar" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="page-heading">
+          <h1 id="pageTitle">Command Center</h1>
+          <div class="sub" id="pageSub"></div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-primary" data-action="quick-add" id="quickAddBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span id="quickAddLabel">Add</span>
+        </button>
+        <button class="btn btn-icon" id="themeToggle" data-action="toggle-theme" aria-label="Toggle theme"></button>
+      </div>
+    </header>
+
+    <main class="main" id="main"></main>
+  </div>
+</div>
+
+<button class="fab" id="fabAdd" data-action="quick-add" aria-label="Add">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+</button>
+
+<div class="modal-wrap" id="modalWrap"></div>
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+/* ============================================================
+   ICONS
+   ============================================================ */
+const ICONS = {
+  dashboard:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>',
+  leaf:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4C10 4 4 10 4 18v2h2c8 0 14-6 14-16Z"/><path d="M9 15c4-2 7-5 9-9"/></svg>',
+  book:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>',
+  globe:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 6 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-6-3.8-9S9.5 5.7 12 3Z"/></svg>',
+  heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7.5-4.8-10-9.5C0.3 6.9 2.4 3.5 6 3.5c2 0 3.6 1.1 6 3.6 2.4-2.5 4-3.6 6-3.6 3.6 0 5.7 3.4 4 7C19.5 15.2 12 20 12 20Z"/></svg>',
+  sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.5M12 19v2.5M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2.5 12H5M19 12h2.5M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>',
+  moon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 13.2A8.7 8.7 0 1 1 10.8 3 6.9 6.9 0 0 0 21 13.2Z"/></svg>',
+  trash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4.8c0-.7.6-1.3 1.3-1.3h3.4c.7 0 1.3.6 1.3 1.3V7M18.5 7 18 19.4c0 1-.9 1.9-1.9 1.9H7.9c-1 0-1.9-.9-1.9-1.9L5.5 7"/></svg>',
+  edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20.5h4L20 8.5l-4-4L4 16.5v4Z"/><path d="M13.5 7 17 10.5"/></svg>',
+  close:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>',
+  plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+  minus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6"/></svg>',
+  quote:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.5 6C6 6 4 8.7 4 12.3c0 3 1.9 5.2 4.4 5.2 2 0 3.4-1.5 3.4-3.3 0-1.7-1.2-3-2.8-3-.3 0-.6 0-.8.1.2-1.9 1.7-3.4 3.6-3.6L11.4 6H9.5Zm9.4 0c-3.5 0-5.5 2.7-5.5 6.3 0 3 1.9 5.2 4.4 5.2 2 0 3.4-1.5 3.4-3.3 0-1.7-1.2-3-2.8-3-.3 0-.6 0-.8.1.2-1.9 1.7-3.4 3.6-3.6L20.8 6h-1.9Z"/></svg>',
+  mic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M9 21h6"/></svg>',
+  calendar:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="16" rx="2"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>',
+  yarn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M6 8.5c3 2 3 5 0 7M12 4c2.8 3.5 2.8 12.5 0 16M18 8.5c-3 2-3 5 0 7"/></svg>',
+  empty:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5v-7Z"/><path d="M4 8.5 12 13l8-4.5M12 13v7"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
+  ext:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H5.5A2.5 2.5 0 0 0 3 7.5v11A2.5 2.5 0 0 0 5.5 21h11a2.5 2.5 0 0 0 2.5-2.5V15M14 4h6v6M20 4 11 13"/></svg>',
+};
+const NAV_ICON = { dashboard:'dashboard', p1:'leaf', p2:'book', p3:'globe', p4:'heart' };
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+const uid = () => Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-4);
+const todayISO = () => new Date().toISOString().slice(0,10);
+const pad2 = n => String(n).padStart(2,'0');
+function fmtDate(iso){
+  if(!iso) return '—';
+  const d = new Date(iso+'T00:00:00');
+  if(isNaN(d)) return iso;
+  return d.toLocaleDateString('en-GB',{weekday:'short', day:'numeric', month:'short'});
+}
+function fmtDateShort(iso){
+  if(!iso) return '—';
+  const d = new Date(iso+'T00:00:00');
+  if(isNaN(d)) return iso;
+  return d.toLocaleDateString('en-GB',{day:'numeric', month:'short'});
+}
+function daysBetween(a,b){ return Math.round((new Date(b)-new Date(a))/86400000); }
+function addDays(iso,n){ const d=new Date(iso+'T00:00:00'); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
+function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+function esc(str){ return String(str==null?'':str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function pct(n,d){ return d>0 ? Math.round((n/d)*100) : 0; }
+
+function toast(msg){
+  const stack = document.getElementById('toastStack');
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.textContent = msg;
+  stack.appendChild(el);
+  requestAnimationFrame(()=> el.classList.add('show'));
+  setTimeout(()=>{ el.classList.remove('show'); setTimeout(()=>el.remove(),200); }, 2600);
+}
+
+/* ============================================================
+   SEED DATA  (relative to "today")
+   ============================================================ */
+function seedData(){
+  const T = todayISO();
+  return {
+    theme: null,
+    activePage: 'dashboard',
+    tasks: [
+      {id:uid(), title:'Submit literature review draft to advisor', category:'studies', tag:"Master's", due:T, priority:'high', done:false},
+      {id:uid(), title:'Prep youth workshop materials — SDG 14', category:'work', tag:'Science Center', due:T, priority:'high', done:false},
+      {id:uid(), title:'Revise Surah Al-Kahf memorization (last 10 verses)', category:'studies', tag:'Diploma', due:T, priority:'med', done:false},
+      {id:uid(), title:'Reply to school visit coordinator email', category:'work', tag:'Science Center', due:T, priority:'med', done:true},
+      {id:uid(), title:'Block 30 min for granny-square blanket rows', category:'personal', tag:'Crochet', due:T, priority:'low', done:false},
+      {id:uid(), title:'Draft LinkedIn post on fieldwork findings', category:'personal', tag:'Content', due:addDays(T,1), priority:'med', done:false},
+    ],
+    timeline: [
+      {id:uid(), title:'Fiqh al-Mu’amalat — weekly class', time:'07:30', category:'class', date:T},
+      {id:uid(), title:'Team stand-up — SDG Youth Programs', time:'09:00', category:'work', date:T},
+      {id:uid(), title:'Advisor check-in (thesis Ch.2)', time:'11:30', category:'class', date:T},
+      {id:uid(), title:'School visit walkthrough — Science Center floor', time:'13:00', category:'work', date:T},
+      {id:uid(), title:'Crochet + podcast wind-down', time:'20:00', category:'personal', date:T},
+    ],
+    quickLogs: [
+      {id:uid(), type:'note', text:'Fieldwork site B shows higher microplastic density near the outfall — flag for Ch.3', date:T, ts:Date.now()-3600e3},
+    ],
+    p1: {
+      courses: [
+        {id:uid(), name:'Environmental Policy & Governance', code:'ENV-612', sessions: mkSessions(T,[-21,-14,-7,'A'],[-21,'P'],[-14,'P'],[-7,'E'])},
+        {id:uid(), name:'Climate Systems & Modelling', code:'ENV-604', sessions: seededSessions(T, ['P','P','A','P','P'])},
+        {id:uid(), name:'Research Methods in Env. Studies', code:'ENV-701', sessions: seededSessions(T, ['P','P','P','E'])},
+      ],
+      thesis: {
+        title:'Microplastic Distribution in Coastal Sediments — Bahrain Case Study',
+        milestones: [
+          {id:'proposal', name:'Proposal', status:'done', notes:'Approved by committee on first submission.'},
+          {id:'litreview', name:'Literature Review', status:'inprogress', notes:'Draft 2 with advisor; tightening the policy-gap section.'},
+          {id:'fieldwork', name:'Fieldwork / Data Collection', status:'inprogress', notes:'Sites A–C sampled; Site D scheduled next low tide.'},
+          {id:'drafts', name:'Drafting', status:'todo', notes:''},
+          {id:'submission', name:'Submission', status:'todo', notes:''},
+        ]
+      },
+      materials: [
+        {id:uid(), title:'ENV-612 Syllabus', category:'Syllabus', semester:'Fall 2026', module:'Environmental Policy & Governance', link:'', type:'PDF'},
+        {id:uid(), title:'Ostrom — Governing the Commons (ch. 1–3)', category:'Readings', semester:'Fall 2026', module:'Environmental Policy & Governance', link:'', type:'Reading'},
+        {id:uid(), title:'Coastal sediment sampling dataset (raw, Aug)', category:'Data Sets', semester:'Fall 2026', module:'Research Methods', link:'', type:'Dataset'},
+        {id:uid(), title:'Climate Modelling — Week 3 slides', category:'Lecture Slides', semester:'Fall 2026', module:'Climate Systems & Modelling', link:'', type:'Slides'},
+      ],
+      feed: [
+        {id:uid(), tag:'Policy', title:'Bahrain updates national waste management strategy', source:'Supreme Council for Environment', summary:'Revised targets for landfill diversion and single-use plastics phased approach.', url:'', date:addDays(T,-2)},
+        {id:uid(), tag:'Research', title:'Gulf-wide study links coastal development to seagrass decline', source:'Marine Policy Journal', summary:'Cross-referenced satellite data across 6 sites; relevant to Ch.4 discussion.', url:'', date:addDays(T,-5)},
+        {id:uid(), tag:'Climate Action', title:'GCC youth climate coalition announces 2027 fellowship', source:'Regional NGO Network', summary:'Fellowship covers policy advocacy training — possible thesis dissemination angle.', url:'', date:addDays(T,-9)},
+      ],
+    },
+    p2: {
+      courses: [
+        {id:uid(), name:'Fiqh al-Mu’amalat', sessions: seededSessions(T, ['P','P','P','P','A'])},
+        {id:uid(), name:'Foundations of Aqeedah', sessions: seededSessions(T, ['P','E','P','P'])},
+        {id:uid(), name:'Usul al-Fiqh', sessions: seededSessions(T, ['P','P','P'])},
+      ],
+      memorization: [
+        {id:uid(), item:'Surah Al-Kahf', totalUnits:110, completedUnits:82, lastRevised:addDays(T,-2), intervalDays:3},
+        {id:uid(), item:'Surah Ya-Sin', totalUnits:83, completedUnits:83, lastRevised:addDays(T,-6), intervalDays:7},
+        {id:uid(), item:'40 Hadith Nawawi', totalUnits:40, completedUnits:19, lastRevised:addDays(T,-1), intervalDays:2},
+      ],
+      examChecklist: [
+        {id:uid(), text:'Review Usul al-Fiqh chapter summaries', done:true},
+        {id:uid(), text:'Past-paper practice — Fiqh al-Mu’amalat', done:false},
+        {id:uid(), text:'Consolidate Aqeedah key terms glossary', done:false},
+      ],
+      notes: [
+        {id:uid(), title:'Contracts of sale — conditions of validity', week:'Week 6', takeaways:'Distinguished gharar from acceptable commercial risk; three case studies discussed.', audioLink:'', date:addDays(T,-6)},
+        {id:uid(), title:'Divine attributes — Ahl al-Sunnah position', week:'Week 5', takeaways:'Comparative overview vs. Mu’tazila and Ash’ari positions; recommended supplementary reading.', audioLink:'', date:addDays(T,-13)},
+      ],
+    },
+    p3: {
+      programs: [
+        {id:uid(), name:'Ocean Guardians — Coastal Cleanup Workshop', sdgs:[14,13,4], date:addDays(T,6), audience:'Grades 7–9, 60 students', status:'planning'},
+        {id:uid(), name:'Renewable Energy Discovery Day', sdgs:[7,9,13], date:addDays(T,18), audience:'Public, family drop-in', status:'confirmed'},
+        {id:uid(), name:'Girls in STEM — Water Innovation Lab', sdgs:[5,6,9], date:addDays(T,-10), audience:'Grades 9–12, 40 students', status:'completed'},
+      ],
+      events: [
+        {id:uid(), name:'Ocean Guardians Workshop', date:addDays(T,6), partner:'Bahrain Marine Conservation Society', speaker:'Dr. Lulwa Al-Ansari', prep:'in-progress'},
+        {id:uid(), name:'Renewable Energy Discovery Day', date:addDays(T,18), partner:'EWA Sustainability Office', speaker:'TBC', prep:'not-started'},
+        {id:uid(), name:'School Visit — St. Christopher’s', date:addDays(T,2), partner:'—', speaker:'—', prep:'ready'},
+      ],
+      deliverables: [
+        {id:uid(), title:'Workshop activity sheets — Ocean Guardians', bucket:'active', due:addDays(T,3)},
+        {id:uid(), title:'Sponsorship deck for Discovery Day', bucket:'active', due:addDays(T,9)},
+        {id:uid(), title:'Budget sign-off — Q4 youth programs', bucket:'approval', due:addDays(T,4)},
+        {id:uid(), title:'Venue permit — Discovery Day outdoor booth', bucket:'approval', due:addDays(T,7)},
+        {id:uid(), title:'Girls in STEM post-event report', bucket:'completed', due:addDays(T,-8)},
+      ],
+    },
+    p4: {
+      crochet: [
+        {id:uid(), name:'Granny Square Throw Blanket', hook:'4.5mm', yarn:'Sage & cream DK cotton (6 skeins)', rows:38, totalRows:80, notes:'Switching to join-as-you-go for the border.', status:'in progress'},
+        {id:uid(), name:'Textured Tote Bag', hook:'5.0mm', yarn:'Terracotta cotton blend', rows:0, totalRows:52, notes:'Pattern sourced, swatch pending.', status:'planned'},
+      ],
+      quran: [
+        {id:uid(), surah:"Surah Ar-Rahman", totalVerses:78, memorizedVerses:78, lastRevised:addDays(T,-4), intervalDays:5},
+        {id:uid(), surah:"Surah Al-Waqi'ah", totalVerses:96, memorizedVerses:41, lastRevised:addDays(T,-1), intervalDays:3},
+        {id:uid(), surah:"Juz' Amma — remaining short surahs", totalVerses:37, memorizedVerses:12, lastRevised:addDays(T,-7), intervalDays:4},
+      ],
+      books: [
+        {id:uid(), title:'Braiding Sweetgrass', author:'Robin Wall Kimmerer', pagesRead:210, totalPages:390, status:'reading', quotes:[{id:uid(), text:'The land knows you, even when you are lost.', page:'p.42'}]},
+        {id:uid(), title:'The Sealed Nectar', author:'Safiur-Rahman Mubarakpuri', pagesRead:480, totalPages:480, status:'completed', quotes:[]},
+        {id:uid(), title:'Doughnut Economics', author:'Kate Raworth', pagesRead:0, totalPages:320, status:'want', quotes:[]},
+      ],
+      events: [
+        {id:uid(), title:'Panel: Youth Voices in Climate Policy', date:addDays(T,11), type:'host', prep:'Outline intro + 5 discussion prompts; confirm panelist bios.'},
+        {id:uid(), title:'Toastmasters open-mic night', date:addDays(T,-4), type:'attend', prep:'Delivered 5-min speech on field research storytelling.'},
+      ],
+      social: [
+        {id:uid(), platform:'linkedin', date:addDays(T,1), caption:'What 3 weeks of coastal sampling taught me about policy gaps — a thread on turning fieldwork into action.', hashtags:'#Sustainability, #EnvironmentalScience, #Bahrain', status:'draft'},
+        {id:uid(), platform:'instagram', date:addDays(T,2), caption:'Row 38 of 80 🧶 slow stitching between thesis chapters.', hashtags:'#CrochetersOfInstagram, #SlowLiving', status:'idea'},
+        {id:uid(), platform:'instagram', date:addDays(T,-3), caption:'Behind the scenes at Girls in STEM — water innovation lab!', hashtags:'#SDG5, #STEM, #BahrainScienceCenter', status:'posted'},
+      ],
+    },
+  };
+}
+function mkSessions(T, ...args){ return seededSessions(T, ['P','P','A','P','E']); }
+function seededSessions(T, pattern){
+  return pattern.map((s,i)=> ({ date: addDays(T, -(pattern.length-i)*7), status: s==='P'?'present':s==='A'?'absent':'excused' }));
+}
+
+/* ============================================================
+   STORAGE
+   ============================================================ */
+const STORAGE_KEY = 'lifehub_data_v1';
+let memoryOnly = false;
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){ memoryOnly = true; }
+  return seedData();
+}
+function persist(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+  catch(e){ memoryOnly = true; }
+}
+let state = loadState();
+if(!state.p4.quran){ state.p4.quran = seedData().p4.quran; }
+if(!state.theme){
+  state.theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+}
+
+function commit(){ persist(); render(); }
+
+/* generic CRUD factory over an array reachable via getter/setter closures */
+function crud(get,set){
+  return {
+    add(item){ const arr=get(); arr.push(item); set(arr); commit(); return item; },
+    remove(id){ set(get().filter(x=>x.id!==id)); commit(); },
+    update(id,patch){ const arr=get(); const it=arr.find(x=>x.id===id); if(it) Object.assign(it,patch); commit(); },
+    find(id){ return get().find(x=>x.id===id); },
+  };
+}
+const cTasks = crud(()=>state.tasks, v=>state.tasks=v);
+const cTimeline = crud(()=>state.timeline, v=>state.timeline=v);
+const cLogs = crud(()=>state.quickLogs, v=>state.quickLogs=v);
+const cP1Courses = crud(()=>state.p1.courses, v=>state.p1.courses=v);
+const cP1Materials = crud(()=>state.p1.materials, v=>state.p1.materials=v);
+const cP1Feed = crud(()=>state.p1.feed, v=>state.p1.feed=v);
+const cP2Courses = crud(()=>state.p2.courses, v=>state.p2.courses=v);
+const cP2Memo = crud(()=>state.p2.memorization, v=>state.p2.memorization=v);
+const cP2Checklist = crud(()=>state.p2.examChecklist, v=>state.p2.examChecklist=v);
+const cP2Notes = crud(()=>state.p2.notes, v=>state.p2.notes=v);
+const cP3Programs = crud(()=>state.p3.programs, v=>state.p3.programs=v);
+const cP3Events = crud(()=>state.p3.events, v=>state.p3.events=v);
+const cP3Deliv = crud(()=>state.p3.deliverables, v=>state.p3.deliverables=v);
+const cP4Crochet = crud(()=>state.p4.crochet, v=>state.p4.crochet=v);
+const cP4Books = crud(()=>state.p4.books, v=>state.p4.books=v);
+const cP4Events = crud(()=>state.p4.events, v=>state.p4.events=v);
+const cP4Social = crud(()=>state.p4.social, v=>state.p4.social=v);
+const cP4Quran = crud(()=>state.p4.quran, v=>state.p4.quran=v);
+
+/* ============================================================
+   MODAL / FORM BUILDER
+   ============================================================ */
+const modalWrap = document.getElementById('modalWrap');
+
+function closeModal(){
+  modalWrap.classList.remove('show');
+  modalWrap.innerHTML = '';
+}
+modalWrap.addEventListener('click', (e)=>{ if(e.target.classList.contains('modal-backdrop')) closeModal(); });
+document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+
+function fieldHTML(f, initial){
+  const val = initial && initial[f.key] !== undefined ? initial[f.key] : (f.default !== undefined ? f.default : '');
+  const id = 'f_'+f.key;
+  let input = '';
+  if(f.type === 'textarea'){
+    input = `<textarea id="${id}" name="${f.key}" placeholder="${esc(f.placeholder||'')}" ${f.required?'required':''}>${esc(val)}</textarea>`;
+  } else if(f.type === 'select'){
+    input = `<select id="${id}" name="${f.key}">${f.options.map(o=>`<option value="${esc(o.value)}" ${String(o.value)===String(val)?'selected':''}>${esc(o.label)}</option>`).join('')}</select>`;
+  } else if(f.type === 'number'){
+    input = `<input type="number" id="${id}" name="${f.key}" value="${esc(val)}" ${f.min!==undefined?`min="${f.min}"`:''} ${f.max!==undefined?`max="${f.max}"`:''} placeholder="${esc(f.placeholder||'')}">`;
+  } else if(f.type === 'date'){
+    input = `<input type="date" id="${id}" name="${f.key}" value="${esc(val)}">`;
+  } else if(f.type === 'time'){
+    input = `<input type="time" id="${id}" name="${f.key}" value="${esc(val)}">`;
+  } else {
+    input = `<input type="text" id="${id}" name="${f.key}" value="${esc(val)}" placeholder="${esc(f.placeholder||'')}" ${f.required?'required':''}>`;
+  }
+  const half = f.half ? 'style="min-width:0"' : '';
+  return `<div class="field" ${half}><label for="${id}">${esc(f.label)}</label>${input}</div>`;
+}
+
+function openFormModal({title, fields, initial, submitLabel='Save', onSubmit}){
+  const rows = [];
+  for(let i=0;i<fields.length;i++){
+    if(fields[i].half && fields[i+1] && fields[i+1].half){
+      rows.push(`<div class="field-row">${fieldHTML(fields[i],initial)}${fieldHTML(fields[i+1],initial)}</div>`);
+      i++;
+    } else rows.push(fieldHTML(fields[i], initial));
+  }
+  modalWrap.innerHTML = `
+    <div class="modal-backdrop"></div>
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head"><h3>${esc(title)}</h3>
+        <button class="modal-close" data-close>${ICONS.close}</button>
+      </div>
+      <form id="dynForm">
+        ${rows.join('')}
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+          <button type="submit" class="btn btn-primary">${esc(submitLabel)}</button>
+        </div>
+      </form>
+    </div>`;
+  modalWrap.classList.add('show');
+  modalWrap.querySelectorAll('[data-close]').forEach(b=> b.addEventListener('click', closeModal));
+  modalWrap.querySelector('#dynForm').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const data = {};
+    fields.forEach(f=>{
+      const el = document.getElementById('f_'+f.key);
+      let v = el.value;
+      if(f.type==='number') v = v===''? 0 : Number(v);
+      data[f.key] = v;
+    });
+    onSubmit(data);
+    closeModal();
+  });
+  setTimeout(()=>{ const first = modalWrap.querySelector('input,textarea,select'); if(first) first.focus(); }, 30);
+}
+
+function confirmAction({title='Are you sure?', message, danger=true, confirmLabel='Delete', onConfirm}){
+  modalWrap.innerHTML = `
+    <div class="modal-backdrop"></div>
+    <div class="modal confirm" role="dialog" aria-modal="true">
+      <div class="modal-head"><h3>${esc(title)}</h3><button class="modal-close" data-close>${ICONS.close}</button></div>
+      <p class="msg">${esc(message||'This action cannot be undone.')}</p>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close>Cancel</button>
+        <button type="button" class="btn ${danger?'btn-danger':'btn-primary'}" id="confirmBtn">${esc(confirmLabel)}</button>
+      </div>
+    </div>`;
+  modalWrap.classList.add('show');
+  modalWrap.querySelectorAll('[data-close]').forEach(b=> b.addEventListener('click', closeModal));
+  modalWrap.querySelector('#confirmBtn').addEventListener('click', ()=>{ onConfirm(); closeModal(); });
+}
+
+/* ============================================================
+   NAV / ROUTER / TOPBAR
+   ============================================================ */
+const PAGES = [
+  {id:'dashboard', label:'Command Center', sub:"Today's overview across every pillar"},
+  {id:'p1', label:"Master's Degree", sub:'Environmental Studies — courses, thesis & research'},
+  {id:'p2', label:'Religious Studies', sub:'Diploma — Bahrain Institute'},
+  {id:'p3', label:'Science Center', sub:'Youth programs & SDG initiatives'},
+  {id:'p4', label:'Personal Life', sub:'Hobbies, reading, speaking & content'},
+];
+const NAV_CLASS = {dashboard:'nav-0', p1:'nav-1', p2:'nav-2', p3:'nav-3', p4:'nav-4'};
+
+function renderNav(){
+  const nav = document.getElementById('nav');
+  nav.innerHTML = PAGES.map(p => `
+    <button class="nav-item ${NAV_CLASS[p.id]} ${state.activePage===p.id?'active':''}" data-action="nav" data-page="${p.id}">
+      <span class="dot"></span>
+      <span class="ic">${ICONS[NAV_ICON[p.id]]}</span>
+      <span>${p.label}</span>
+    </button>`).join('');
+}
+
+function updateThemeToggle(){
+  const btn = document.getElementById('themeToggle');
+  btn.innerHTML = state.theme === 'dark' ? ICONS.sun : ICONS.moon;
+  document.documentElement.setAttribute('data-theme', state.theme);
+}
+
+const QUICK_ADD_LABEL = {dashboard:'Add task', p1:'Add course', p2:'Add course', p3:'Add program', p4:'Add project'};
+
+function render(){
+  const page = PAGES.find(p=>p.id===state.activePage) || PAGES[0];
+  document.body.className = 'page-' + page.id;
+  document.getElementById('pageTitle').textContent = page.label;
+  document.getElementById('pageSub').textContent = page.sub;
+  document.getElementById('quickAddLabel').textContent = QUICK_ADD_LABEL[page.id] || 'Add';
+  renderNav();
+  updateThemeToggle();
+  const main = document.getElementById('main');
+  main.innerHTML = PAGE_RENDERERS[page.id] ? PAGE_RENDERERS[page.id]() : '';
+}
+
+/* placeholder registry — filled in as each page renderer is defined below */
+const PAGE_RENDERERS = {};
+
+/* ============================================================
+   SHARED DOMAIN HELPERS
+   ============================================================ */
+function attendanceStats(course){
+  const s = course.sessions || [];
+  const present = s.filter(x=>x.status==='present').length;
+  const absent = s.filter(x=>x.status==='absent').length;
+  const excused = s.filter(x=>x.status==='excused').length;
+  const denom = present + absent;
+  return { present, absent, excused, total:s.length, percent: denom>0 ? Math.round((present/denom)*100) : 100 };
+}
+function attendanceTone(p){ return p>=90 ? 'success' : p>=75 ? 'warning' : 'danger'; }
+const CATEGORY_LABEL = {work:'Work', studies:'Studies', personal:'Personal'};
+const CATEGORY_COLOR = {work:'p3', studies:'p1', personal:'p4', class:'p2'};
+const SDG_LIST = [
+  {n:1,t:'No Poverty'},{n:2,t:'Zero Hunger'},{n:3,t:'Good Health'},{n:4,t:'Quality Education'},
+  {n:5,t:'Gender Equality'},{n:6,t:'Clean Water'},{n:7,t:'Clean Energy'},{n:8,t:'Decent Work'},
+  {n:9,t:'Industry & Innovation'},{n:10,t:'Reduced Inequalities'},{n:11,t:'Sustainable Cities'},
+  {n:12,t:'Responsible Consumption'},{n:13,t:'Climate Action'},{n:14,t:'Life Below Water'},
+  {n:15,t:'Life on Land'},{n:16,t:'Peace & Justice'},{n:17,t:'Partnerships'},
+];
+function sdgChip(n){ const s = SDG_LIST.find(x=>x.n===n); return `<span class="chip chip-outline" title="${s?esc(s.t):''}">SDG ${n}</span>`; }
+
+/* ============================================================
+   PAGE: DASHBOARD
+   ============================================================ */
+function renderDashboard(){
+  const T = todayISO();
+  const todaysTasks = state.tasks.filter(t=>t.due===T || !t.done).slice().sort((a,b)=> (a.done - b.done) || 0);
+  const byCategory = {work:[], studies:[], personal:[]};
+  todaysTasks.forEach(t=> byCategory[t.category] && byCategory[t.category].push(t));
+
+  const todaysTimeline = state.timeline.filter(e=>e.date===T).sort((a,b)=> a.time.localeCompare(b.time));
+
+  const recentLogs = state.quickLogs.slice().sort((a,b)=>b.ts-a.ts).slice(0,6);
+
+  const openCount = state.tasks.filter(t=>!t.done).length;
+  const highCount = state.tasks.filter(t=>!t.done && t.priority==='high').length;
+
+  return `
+  <div class="section">
+    <div class="grid-3">
+      ${statTile('Open tasks', openCount, ICONS.check, 'hub')}
+      ${statTile('High priority', highCount, ICONS.dashboard, 'p4')}
+      ${statTile("Today's events", todaysTimeline.length, ICONS.calendar, 'p3')}
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Daily Priority Matrix</h2>
+      <span class="desc">Top tasks across Work, Studies &amp; Personal life</span>
+    </div>
+    <div class="grid-3">
+      ${matrixColumn('work','Work', byCategory.work)}
+      ${matrixColumn('studies','Studies', byCategory.studies)}
+      ${matrixColumn('personal','Personal', byCategory.personal)}
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="section" style="margin-bottom:0">
+      <div class="section-head"><h2>Daily Timeline</h2><span class="desc">${fmtDate(T)}</span></div>
+      <div class="card">
+        ${todaysTimeline.length ? `<div class="stack">${todaysTimeline.map(timelineRow).join('')}</div>` : emptyState('Nothing scheduled today — add a meeting, class or commitment.')}
+      </div>
+    </div>
+
+    <div class="section" style="margin-bottom:0">
+      <div class="section-head"><h2>Quick Log</h2><span class="desc">Rapid capture</span></div>
+      <div class="card stack">
+        <div class="row wrap">
+          <button class="btn" data-action="quick-log-attendance">${ICONS.check} Mark attendance</button>
+          <button class="btn" data-action="quick-log-reading">${ICONS.book} Log reading</button>
+          <button class="btn" data-action="quick-log-note">${ICONS.edit} Quick note</button>
+        </div>
+        ${recentLogs.length ? `<div class="stack" style="margin-top:6px">${recentLogs.map(logRow).join('')}</div>` : `<div class="empty" style="padding:14px 0">No log entries yet today.</div>`}
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+function statTile(label, value, icon, tone){
+  return `<div class="card row" style="gap:14px">
+    <span class="avatar-num" style="width:38px;height:38px;border-radius:10px;background:var(--${tone}-soft);color:var(--${tone}-dark, var(--${tone}));">${icon}</span>
+    <div><div class="mono" style="font-size:1.4rem;font-weight:700;line-height:1">${value}</div><div style="font-size:.75rem;color:var(--text-muted)">${label}</div></div>
+  </div>`;
+}
+
+function matrixColumn(cat, label, items){
+  return `<div class="card pad-sm" style="border-top:3px solid var(--${CATEGORY_COLOR[cat]})">
+    <div class="between" style="margin-bottom:10px"><span class="card-eyebrow">${label}</span><span class="chip chip-outline">${items.length}</span></div>
+    ${items.length ? `<div class="stack">${items.slice(0,5).map(taskRow).join('')}</div>` : `<div class="empty" style="padding:14px 0">All clear.</div>`}
+  </div>`;
+}
+
+function taskRow(t){
+  return `<div class="row" style="align-items:flex-start;gap:9px">
+    <button class="btn btn-icon btn-sm" style="width:22px;height:22px;border-radius:6px;flex-shrink:0;margin-top:1px;${t.done?`background:var(--success);border-color:var(--success);color:#fff`:''}" data-action="toggle-task" data-id="${t.id}">${t.done?ICONS.check:''}</button>
+    <div style="min-width:0;flex:1">
+      <div style="font-size:.83rem;font-weight:600;${t.done?'text-decoration:line-through;color:var(--text-faint)':''}">${esc(t.title)}</div>
+      <div class="row" style="gap:6px;margin-top:3px;flex-wrap:wrap">
+        <span class="chip chip-outline">${esc(t.tag||CATEGORY_LABEL[t.category])}</span>
+        ${t.priority==='high'?'<span class="chip status-overdue">High</span>':''}
+      </div>
+    </div>
+    <button class="btn btn-icon btn-ghost btn-sm" style="width:22px;height:22px" data-action="delete-task" data-id="${t.id}">${ICONS.close}</button>
+  </div>`;
+}
+
+function timelineRow(e){
+  return `<div class="row" style="gap:12px;border-left:3px solid var(--${CATEGORY_COLOR[e.category]||'hub'});padding-left:10px">
+    <span class="mono" style="font-size:.78rem;color:var(--text-muted);width:44px;flex-shrink:0">${esc(e.time)}</span>
+    <span style="font-size:.85rem;font-weight:600;flex:1">${esc(e.title)}</span>
+    <span class="chip chip-outline">${esc(e.category)}</span>
+    <button class="btn btn-icon btn-ghost btn-sm" style="width:22px;height:22px" data-action="delete-timeline" data-id="${e.id}">${ICONS.close}</button>
+  </div>`;
+}
+
+function logRow(l){
+  const icon = l.type==='attendance'?ICONS.check : l.type==='reading'?ICONS.book : ICONS.edit;
+  const time = new Date(l.ts).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  return `<div class="row" style="gap:9px;font-size:.8rem;color:var(--text-muted)">
+    <span style="width:16px;height:16px;color:var(--accent)">${icon}</span>
+    <span style="flex:1;color:var(--text)">${esc(l.text)}</span>
+    <span class="mono" style="font-size:.7rem">${time}</span>
+  </div>`;
+}
+
+function emptyState(msg){
+  return `<div class="empty">${ICONS.empty}${esc(msg)}</div>`;
+}
+
+PAGE_RENDERERS.dashboard = renderDashboard;
+
+/* ============================================================
+   PAGE: PILLAR 1 — MASTER'S DEGREE ORGANIZER
+   ============================================================ */
+const THESIS_STAGE_ORDER = ['todo','inprogress','done'];
+const THESIS_STAGE_LABEL = {todo:'Not started', inprogress:'In progress', done:'Done'};
+
+function renderP1(){
+  const p1 = state.p1;
+  return `
+  <div class="section">
+    <div class="section-head">
+      <h2>Course &amp; Attendance Tracker</h2>
+      <span class="desc">Tap Present / Absent / Excused to log today — percentages update automatically</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Module</th><th>Code</th><th>Sessions</th><th>Attendance</th><th>Log today</th><th></th></tr></thead>
+        <tbody>
+          ${p1.courses.map(c=>courseRow(c,'p1')).join('') || `<tr><td colspan="6"><div class="empty">No modules yet — add your first course.</div></td></tr>`}
+        </tbody>
+      </table>
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn" data-action="add-course" data-pillar="p1">${ICONS.plus} Add module</button></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Thesis &amp; Research Pipeline</h2>
+      <span class="desc">${esc(p1.thesis.title)}</span>
+    </div>
+    <div class="card">
+      <div class="stepper">
+        ${p1.thesis.milestones.map((m,i)=> thesisStep(m, i===p1.thesis.milestones.length-1)).join('')}
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Course Materials Repository</h2>
+      <span class="desc">Syllabi, readings, data sets &amp; slides by semester and module</span>
+    </div>
+    <div class="grid-3">
+      ${groupBy(p1.materials,'category').map(([cat,items])=> materialGroupCard(cat,items)).join('') || emptyState('No materials saved yet.')}
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn" data-action="add-material">${ICONS.plus} Add material</button></div>
+  </div>
+
+  <div class="section" style="margin-bottom:0">
+    <div class="section-head">
+      <h2>Field Research &amp; Policy Feed</h2>
+      <span class="desc">Environmental news, journal articles &amp; sustainability policy worth tracking</span>
+    </div>
+    <div class="grid-3">
+      ${p1.feed.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(feedCard).join('') || emptyState('No feed items yet — save an article or policy update.')}
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn" data-action="add-feed">${ICONS.plus} Add feed item</button></div>
+  </div>
+  `;
+}
+
+function courseRow(c, pillar){
+  const s = attendanceStats(c);
+  const tone = attendanceTone(s.percent);
+  return `<tr>
+    <td><strong>${esc(c.name)}</strong></td>
+    <td class="mono" style="color:var(--text-muted)">${esc(c.code||'—')}</td>
+    <td class="mono">${s.present}P · ${s.absent}A · ${s.excused}E</td>
+    <td><div class="row" style="gap:8px"><div class="progress" style="width:70px"><span style="width:${s.percent}%;background:var(--${tone})"></span></div><span class="mono" style="font-size:.78rem;font-weight:700;color:var(--${tone})">${s.percent}%</span></div></td>
+    <td><div class="row" style="gap:4px">
+      <button class="btn btn-sm" data-action="mark-attendance" data-id="${c.id}" data-pillar="${pillar}" data-status="present" title="Present">P</button>
+      <button class="btn btn-sm" data-action="mark-attendance" data-id="${c.id}" data-pillar="${pillar}" data-status="absent" title="Absent">A</button>
+      <button class="btn btn-sm" data-action="mark-attendance" data-id="${c.id}" data-pillar="${pillar}" data-status="excused" title="Excused">E</button>
+    </div></td>
+    <td><button class="btn btn-icon btn-ghost btn-sm" data-action="delete-course" data-id="${c.id}" data-pillar="${pillar}">${ICONS.trash}</button></td>
+  </tr>`;
+}
+
+function thesisStep(m, isLast){
+  const cls = m.status==='done'?'done':m.status==='inprogress'?'inprogress':'';
+  const icon = m.status==='done' ? ICONS.check : '';
+  return `<div class="step ${cls}">
+    <div class="step-track"><div class="step-dot">${icon}</div>${isLast?'':'<div class="step-line"></div>'}</div>
+    <div class="step-body">
+      <div class="between" style="margin-bottom:4px">
+        <span style="font-weight:700;font-size:.9rem">${esc(m.name)}</span>
+        <select data-action="thesis-status" data-id="${m.id}" style="width:auto;padding:4px 8px;font-size:.72rem;font-weight:700">
+          ${THESIS_STAGE_ORDER.map(st=>`<option value="${st}" ${st===m.status?'selected':''}>${THESIS_STAGE_LABEL[st]}</option>`).join('')}
+        </select>
+      </div>
+      <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:6px">${esc(m.notes)||'<span style="color:var(--text-faint)">No notes yet.</span>'}</p>
+      <button class="btn btn-sm btn-ghost" data-action="edit-thesis-notes" data-id="${m.id}">${ICONS.edit} Edit notes</button>
+    </div>
+  </div>`;
+}
+
+function groupBy(arr, key){
+  const map = new Map();
+  arr.forEach(item=>{ const k = item[key]||'Other'; if(!map.has(k)) map.set(k,[]); map.get(k).push(item); });
+  return Array.from(map.entries());
+}
+
+function materialGroupCard(cat, items){
+  return `<div class="card pad-sm">
+    <div class="card-eyebrow" style="margin-bottom:10px">${esc(cat)}</div>
+    <div class="stack">
+      ${items.map(m=>`<div class="row" style="gap:8px;align-items:flex-start">
+        <div style="min-width:0;flex:1">
+          <div style="font-size:.83rem;font-weight:600">${esc(m.title)}</div>
+          <div style="font-size:.72rem;color:var(--text-faint)">${esc(m.module)} · ${esc(m.semester)}</div>
+        </div>
+        <button class="btn btn-icon btn-ghost btn-sm" style="width:22px;height:22px" data-action="delete-material" data-id="${m.id}">${ICONS.close}</button>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function feedCard(f){
+  return `<div class="card pad-sm">
+    <div class="between" style="margin-bottom:8px"><span class="chip">${esc(f.tag)}</span><span class="mono" style="font-size:.7rem;color:var(--text-faint)">${fmtDateShort(f.date)}</span></div>
+    <div class="card-title" style="font-size:.95rem;margin-bottom:4px">${esc(f.title)}</div>
+    <div style="font-size:.68rem;color:var(--text-faint);margin-bottom:6px">${esc(f.source)}</div>
+    <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:10px">${esc(f.summary)}</p>
+    <div class="between">
+      ${f.url ? `<a class="btn btn-sm btn-ghost" href="${esc(f.url)}" target="_blank" rel="noopener">${ICONS.ext} Open</a>` : '<span></span>'}
+      <button class="btn btn-icon btn-ghost btn-sm" data-action="delete-feed" data-id="${f.id}">${ICONS.trash}</button>
+    </div>
+  </div>`;
+}
+
+PAGE_RENDERERS.p1 = renderP1;
+
+/* ============================================================
+   PAGE: PILLAR 2 — RELIGIOUS STUDIES DIPLOMA ORGANIZER
+   ============================================================ */
+function renderP2(){
+  const p2 = state.p2;
+  return `
+  <div class="section">
+    <div class="section-head">
+      <h2>Curriculum Track &amp; Class Log</h2>
+      <span class="desc">Islamic sciences, Fiqh &amp; foundational modules</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Module</th><th>Code</th><th>Sessions</th><th>Attendance</th><th>Log today</th><th></th></tr></thead>
+        <tbody>
+          ${p2.courses.map(c=>courseRow(c,'p2')).join('') || `<tr><td colspan="6"><div class="empty">No modules yet — add your first class.</div></td></tr>`}
+        </tbody>
+      </table>
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn" data-action="add-course" data-pillar="p2">${ICONS.plus} Add module</button></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Memorization &amp; Revision Tracker</h2>
+      <span class="desc">Text &amp; Qur'anic memorization with spaced revision intervals</span>
+    </div>
+    <div class="grid-2">
+      ${p2.memorization.map(memoCard).join('') || emptyState('Nothing tracked yet.')}
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn" data-action="add-memo">${ICONS.plus} Add memorization item</button></div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="card-eyebrow" style="margin-bottom:10px">Exam preparation checklist</div>
+      <div class="stack">
+        ${p2.examChecklist.map(checklistRow).join('') || emptyState('No checklist items yet.')}
+      </div>
+      <div class="row" style="margin-top:12px"><button class="btn btn-sm" data-action="add-checklist-item">${ICONS.plus} Add item</button></div>
+    </div>
+  </div>
+
+  <div class="section" style="margin-bottom:0">
+    <div class="section-head">
+      <h2>Lecture Notes &amp; Audio Archive</h2>
+      <span class="desc">Weekly notes, key takeaways &amp; recording links</span>
+    </div>
+    <div class="grid-2">
+      ${p2.notes.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(noteCard).join('') || emptyState('No notes archived yet.')}
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn" data-action="add-note">${ICONS.plus} Add lecture note</button></div>
+  </div>
+  `;
+}
+
+function memoCard(m){
+  const p = pct(m.completedUnits, m.totalUnits);
+  const nextDue = addDays(m.lastRevised, m.intervalDays);
+  const overdue = nextDue <= todayISO();
+  return `<div class="card pad-sm">
+    <div class="between" style="margin-bottom:8px">
+      <span class="card-title" style="font-size:.95rem">${esc(m.item)}</span>
+      <button class="btn btn-icon btn-ghost btn-sm" style="width:22px;height:22px" data-action="delete-memo" data-id="${m.id}">${ICONS.close}</button>
+    </div>
+    <div class="row" style="gap:10px;margin-bottom:8px">
+      <div class="progress" style="flex:1"><span style="width:${p}%"></span></div>
+      <span class="mono" style="font-size:.75rem;font-weight:700;color:var(--accent-dark)">${m.completedUnits}/${m.totalUnits}</span>
+    </div>
+    <div class="between" style="font-size:.75rem;color:var(--text-muted)">
+      <span>Last revised ${fmtDateShort(m.lastRevised)}</span>
+      <span class="chip ${overdue?'status-absent':'status-present'}">${overdue?'Revision due':'Next: '+fmtDateShort(nextDue)}</span>
+    </div>
+    <div class="row" style="margin-top:10px;gap:8px">
+      <button class="btn btn-sm" data-action="memo-revised" data-id="${m.id}">Mark revised today</button>
+      <button class="btn btn-sm btn-ghost" data-action="memo-progress" data-id="${m.id}">+1 unit</button>
+    </div>
+  </div>`;
+}
+
+function checklistRow(item){
+  return `<div class="row" style="gap:9px">
+    <button class="btn btn-icon btn-sm" style="width:20px;height:20px;border-radius:6px;${item.done?`background:var(--success);border-color:var(--success);color:#fff`:''}" data-action="toggle-checklist" data-id="${item.id}">${item.done?ICONS.check:''}</button>
+    <span style="font-size:.83rem;flex:1;${item.done?'text-decoration:line-through;color:var(--text-faint)':''}">${esc(item.text)}</span>
+    <button class="btn btn-icon btn-ghost btn-sm" style="width:20px;height:20px" data-action="delete-checklist" data-id="${item.id}">${ICONS.close}</button>
+  </div>`;
+}
+
+function noteCard(n){
+  return `<div class="card pad-sm">
+    <div class="between" style="margin-bottom:6px"><span class="chip">${esc(n.week)}</span><span class="mono" style="font-size:.7rem;color:var(--text-faint)">${fmtDateShort(n.date)}</span></div>
+    <div class="card-title" style="font-size:.95rem;margin-bottom:4px">${esc(n.title)}</div>
+    <p style="font-size:.8rem;color:var(--text-muted);margin-bottom:8px">${esc(n.takeaways)}</p>
+    <div class="between">
+      ${n.audioLink ? `<a class="btn btn-sm btn-ghost" href="${esc(n.audioLink)}" target="_blank" rel="noopener">${ICONS.mic} Audio</a>` : '<span></span>'}
+      <button class="btn btn-icon btn-ghost btn-sm" data-action="delete-note" data-id="${n.id}">${ICONS.trash}</button>
+    </div>
+  </div>`;
+}
+
+PAGE_RENDERERS.p2 = renderP2;
+
+/* ============================================================
+   PAGE: PILLAR 3 — BAHRAIN SCIENCE CENTER ORGANIZER
+   ============================================================ */
+const PROGRAM_STATUS = {planning:'Planning', confirmed:'Confirmed', completed:'Completed'};
+const PROGRAM_STATUS_CHIP = {planning:'status-pending', confirmed:'status-inprogress', completed:'status-completed'};
+const PREP_STATUS = {'not-started':'Not started', 'in-progress':'In progress', 'ready':'Ready'};
+const PREP_STATUS_CHIP = {'not-started':'status-absent','in-progress':'status-pending','ready':'status-present'};
+const DELIV_BUCKETS = [{id:'active', label:'Active Projects'}, {id:'approval', label:'Approvals Needed'}, {id:'completed', label:'Completed Initiatives'}];
+
+function renderP3(){
+  const p3 = state.p3;
+  return `
+  <div class="section">
+    <div class="section-head">
+      <h2>SDG Program Planner</h2>
+      <span class="desc">Youth programs, workshops &amp; community visits mapped to the UN SDGs</span>
+    </div>
+    <div class="grid-3">
+      ${p3.programs.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(programCard).join('') || emptyState('No programs planned yet.')}
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn" data-action="add-program">${ICONS.plus} Add program</button></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Event Logistics &amp; Stakeholder Matrix</h2>
+      <span class="desc">Partners, speakers &amp; preparation status</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Event</th><th>Date</th><th>Partner</th><th>Speaker</th><th>Prep status</th><th></th></tr></thead>
+        <tbody>
+          ${p3.events.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(eventRow).join('') || `<tr><td colspan="6"><div class="empty">No events logged yet.</div></td></tr>`}
+        </tbody>
+      </table>
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn" data-action="add-event3">${ICONS.plus} Add event</button></div>
+  </div>
+
+  <div class="section" style="margin-bottom:0">
+    <div class="section-head">
+      <h2>Task &amp; Deliverables Tracker</h2>
+      <span class="desc">Move items forward as they progress</span>
+    </div>
+    <div class="kanban">
+      ${DELIV_BUCKETS.map(b=> deliverableColumn(b, p3.deliverables.filter(d=>d.bucket===b.id))).join('')}
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn" data-action="add-deliverable">${ICONS.plus} Add deliverable</button></div>
+  </div>
+  `;
+}
+
+function programCard(p){
+  return `<div class="card pad-sm">
+    <div class="between" style="margin-bottom:8px">
+      <span class="chip ${PROGRAM_STATUS_CHIP[p.status]}">${PROGRAM_STATUS[p.status]}</span>
+      <button class="btn btn-icon btn-ghost btn-sm" style="width:22px;height:22px" data-action="delete-program" data-id="${p.id}">${ICONS.close}</button>
+    </div>
+    <div class="card-title" style="font-size:.95rem;margin-bottom:4px">${esc(p.name)}</div>
+    <div style="font-size:.75rem;color:var(--text-muted);margin-bottom:8px">${fmtDate(p.date)} · ${esc(p.audience)}</div>
+    <div class="row wrap" style="gap:5px">${p.sdgs.map(sdgChip).join('')}</div>
+  </div>`;
+}
+
+function eventRow(e){
+  return `<tr>
+    <td><strong>${esc(e.name)}</strong></td>
+    <td class="mono">${fmtDateShort(e.date)}</td>
+    <td>${esc(e.partner)}</td>
+    <td>${esc(e.speaker)}</td>
+    <td><span class="chip ${PREP_STATUS_CHIP[e.prep]}">${PREP_STATUS[e.prep]}</span></td>
+    <td><button class="btn btn-icon btn-ghost btn-sm" data-action="delete-event3" data-id="${e.id}">${ICONS.trash}</button></td>
+  </tr>`;
+}
+
+function deliverableColumn(bucket, items){
+  return `<div class="kanban-col">
+    <div class="kanban-col-head"><span class="card-eyebrow">${bucket.label}</span><span class="chip chip-outline">${items.length}</span></div>
+    ${items.map(d=>`<div class="kanban-card">
+      <div class="between" style="align-items:flex-start;gap:6px">
+        <span style="font-weight:600">${esc(d.title)}</span>
+        <button class="btn btn-icon btn-ghost btn-sm" style="width:20px;height:20px;flex-shrink:0" data-action="delete-deliverable" data-id="${d.id}">${ICONS.close}</button>
+      </div>
+      <div class="mono" style="font-size:.7rem;color:var(--text-faint);margin:6px 0 8px">Due ${fmtDateShort(d.due)}</div>
+      <select data-action="deliverable-bucket" data-id="${d.id}" style="width:auto;padding:4px 8px;font-size:.7rem;font-weight:700">
+        ${DELIV_BUCKETS.map(b=>`<option value="${b.id}" ${b.id===d.bucket?'selected':''}>${b.label}</option>`).join('')}
+      </select>
+    </div>`).join('') || `<div class="empty" style="padding:14px 6px">Nothing here.</div>`}
+  </div>`;
+}
+
+PAGE_RENDERERS.p3 = renderP3;
+
+/* ============================================================
+   PAGE: PILLAR 4 — PERSONAL LIFE, HOBBIES & MEDIA
+   ============================================================ */
+const BOOK_STATUS = {want:'Want to Read', reading:'Reading', completed:'Completed'};
+const BOOK_STATUS_CHIP = {want:'status-pending', reading:'status-reading', completed:'status-completed'};
+const SOCIAL_STATUS_ORDER = ['idea','draft','scheduled','posted'];
+const SOCIAL_STATUS_LABEL = {idea:'Idea', draft:'Draft', scheduled:'Scheduled', posted:'Posted'};
+
+function renderP4(){
+  const p4 = state.p4;
+  return `
+  <div class="section">
+    <div class="section-head">
+      <h2>Crochet &amp; Craft Studio</h2>
+      <span class="desc">Hook sizes, yarn stash &amp; a live row counter per project</span>
+    </div>
+    <div class="grid-3">
+      ${p4.crochet.map(crochetCard).join('') || emptyState('No projects yet — cast on!')}
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn" data-action="add-crochet">${ICONS.plus} Add project</button></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Qur'an Memorization</h2>
+      <span class="desc">Personal memorization &amp; revision, tracked by surah</span>
+    </div>
+    <div class="grid-2">
+      ${p4.quran.map(quranCard).join('') || emptyState("Nothing tracked yet — add a surah to begin.")}
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn" data-action="add-quran">${ICONS.plus} Add surah</button></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Reading List &amp; Library</h2>
+      <span class="desc">Progress, status &amp; saved quotes</span>
+    </div>
+    <div class="grid-3">
+      ${p4.books.map(bookCard).join('') || emptyState('Your shelf is empty.')}
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn" data-action="add-book">${ICONS.plus} Add book</button></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head">
+      <h2>Event &amp; Public Speaking Log</h2>
+      <span class="desc">Attending or hosting — prep notes &amp; speech outlines</span>
+    </div>
+    <div class="grid-2">
+      ${p4.events.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(speakingCard).join('') || emptyState('No events logged yet.')}
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn" data-action="add-event4">${ICONS.plus} Add event</button></div>
+  </div>
+
+  <div class="section" style="margin-bottom:0">
+    <div class="section-head">
+      <h2>Social Content Planner</h2>
+      <span class="desc">LinkedIn &amp; Instagram drafts, captions &amp; hashtags</span>
+    </div>
+    <div class="grid-3">
+      ${p4.social.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(socialCard).join('') || emptyState('No drafts yet.')}
+    </div>
+    <div class="row" style="margin-top:12px"><button class="btn" data-action="add-social">${ICONS.plus} Add post idea</button></div>
+  </div>
+  `;
+}
+
+function crochetCard(c){
+  const p = pct(c.rows, c.totalRows);
+  return `<div class="card pad-sm">
+    <div class="between" style="margin-bottom:6px">
+      <span class="card-title" style="font-size:.95rem">${esc(c.name)}</span>
+      <button class="btn btn-icon btn-ghost btn-sm" style="width:22px;height:22px" data-action="delete-crochet" data-id="${c.id}">${ICONS.close}</button>
+    </div>
+    <div style="font-size:.75rem;color:var(--text-muted);margin-bottom:10px">Hook ${esc(c.hook)} · ${esc(c.yarn)}</div>
+    <div class="row" style="gap:14px;margin-bottom:8px">
+      <button class="btn btn-icon" data-action="crochet-dec" data-id="${c.id}">${ICONS.minus}</button>
+      <div style="text-align:center;flex:1">
+        <div class="mono" style="font-size:1.3rem;font-weight:700;line-height:1">${c.rows}<span style="color:var(--text-faint);font-size:.85rem">/${c.totalRows}</span></div>
+        <div style="font-size:.65rem;color:var(--text-faint);text-transform:uppercase;letter-spacing:.06em">rows</div>
+      </div>
+      <button class="btn btn-icon" data-action="crochet-inc" data-id="${c.id}">${ICONS.plus}</button>
+    </div>
+    <div class="progress" style="margin-bottom:8px"><span style="width:${p}%"></span></div>
+    <div class="between">
+      <span class="chip chip-outline">${esc(c.status)}</span>
+    </div>
+    ${c.notes ? `<p style="font-size:.76rem;color:var(--text-muted);margin-top:8px">${esc(c.notes)}</p>` : ''}
+  </div>`;
+}
+
+function quranCard(m){
+  const p = pct(m.memorizedVerses, m.totalVerses);
+  const nextDue = addDays(m.lastRevised, m.intervalDays);
+  const overdue = nextDue <= todayISO();
+  return `<div class="card pad-sm">
+    <div class="between" style="margin-bottom:8px">
+      <span class="card-title" style="font-size:.95rem">${esc(m.surah)}</span>
+      <button class="btn btn-icon btn-ghost btn-sm" style="width:22px;height:22px" data-action="delete-quran" data-id="${m.id}">${ICONS.close}</button>
+    </div>
+    <div class="row" style="gap:10px;margin-bottom:8px">
+      <div class="progress" style="flex:1"><span style="width:${p}%"></span></div>
+      <span class="mono" style="font-size:.75rem;font-weight:700;color:var(--accent-dark)">${m.memorizedVerses}/${m.totalVerses}</span>
+    </div>
+    <div class="between" style="font-size:.75rem;color:var(--text-muted)">
+      <span>Last revised ${fmtDateShort(m.lastRevised)}</span>
+      <span class="chip ${overdue?'status-absent':'status-present'}">${overdue?'Revision due':'Next: '+fmtDateShort(nextDue)}</span>
+    </div>
+    <div class="row" style="margin-top:10px;gap:8px">
+      <button class="btn btn-sm" data-action="quran-revised" data-id="${m.id}">Mark revised today</button>
+      <button class="btn btn-sm btn-ghost" data-action="quran-progress" data-id="${m.id}">+1 verse</button>
+    </div>
+  </div>`;
+}
+
+function bookCard(b){
+  const p = pct(b.pagesRead, b.totalPages);
+  return `<div class="card pad-sm">
+    <div class="between" style="margin-bottom:6px">
+      <span class="chip ${BOOK_STATUS_CHIP[b.status]}">${BOOK_STATUS[b.status]}</span>
+      <button class="btn btn-icon btn-ghost btn-sm" style="width:22px;height:22px" data-action="delete-book" data-id="${b.id}">${ICONS.close}</button>
+    </div>
+    <div class="card-title" style="font-size:.95rem;margin-bottom:2px">${esc(b.title)}</div>
+    <div style="font-size:.74rem;color:var(--text-faint);margin-bottom:10px">${esc(b.author)}</div>
+    <div class="row" style="gap:10px;margin-bottom:4px">
+      <div class="progress" style="flex:1"><span style="width:${p}%"></span></div>
+      <span class="mono" style="font-size:.72rem;color:var(--text-muted)">${b.pagesRead}/${b.totalPages}</span>
+    </div>
+    <div class="row" style="gap:6px;margin:10px 0">
+      <button class="btn btn-sm" data-action="book-progress" data-id="${b.id}" data-delta="10">+10 pages</button>
+      <button class="btn btn-sm btn-ghost" data-action="book-progress" data-id="${b.id}" data-delta="-10">-10</button>
+    </div>
+    <div class="stack" style="margin-top:6px">
+      ${b.quotes.map(q=>`<div class="row" style="gap:7px;align-items:flex-start;font-size:.78rem;color:var(--text-muted)">
+        <span style="width:14px;height:14px;color:var(--accent);flex-shrink:0;margin-top:2px">${ICONS.quote}</span>
+        <span style="flex:1">${esc(q.text)} <span class="mono" style="color:var(--text-faint)">${esc(q.page||'')}</span></span>
+      </div>`).join('')}
+    </div>
+    <button class="btn btn-sm btn-ghost" style="margin-top:8px" data-action="add-quote" data-id="${b.id}">${ICONS.plus} Save quote</button>
+  </div>`;
+}
+
+function speakingCard(e){
+  return `<div class="card pad-sm">
+    <div class="between" style="margin-bottom:6px">
+      <span class="chip chip-outline">${e.type==='host'?'Hosting':'Attending'}</span>
+      <button class="btn btn-icon btn-ghost btn-sm" style="width:22px;height:22px" data-action="delete-event4" data-id="${e.id}">${ICONS.close}</button>
+    </div>
+    <div class="card-title" style="font-size:.95rem;margin-bottom:2px">${esc(e.title)}</div>
+    <div class="mono" style="font-size:.72rem;color:var(--text-faint);margin-bottom:8px">${fmtDate(e.date)}</div>
+    ${e.prep ? `<p style="font-size:.8rem;color:var(--text-muted)">${esc(e.prep)}</p>` : ''}
+  </div>`;
+}
+
+function socialCard(s){
+  const idx = SOCIAL_STATUS_ORDER.indexOf(s.status);
+  const nextStatus = SOCIAL_STATUS_ORDER[(idx+1) % SOCIAL_STATUS_ORDER.length];
+  return `<div class="card pad-sm">
+    <div class="between" style="margin-bottom:8px">
+      <span class="chip chip-outline" style="text-transform:capitalize">${esc(s.platform)}</span>
+      <button class="btn btn-icon btn-ghost btn-sm" style="width:22px;height:22px" data-action="delete-social" data-id="${s.id}">${ICONS.close}</button>
+    </div>
+    <p style="font-size:.85rem;margin-bottom:8px">${esc(s.caption)}</p>
+    <div style="font-size:.72rem;color:var(--accent-dark);margin-bottom:10px">${esc(s.hashtags)}</div>
+    <div class="between">
+      <span class="mono" style="font-size:.7rem;color:var(--text-faint)">${fmtDateShort(s.date)}</span>
+      <button class="btn btn-sm chip-outline" data-action="social-status" data-id="${s.id}" title="Advance to ${SOCIAL_STATUS_LABEL[nextStatus]}">${SOCIAL_STATUS_LABEL[s.status]} →</button>
+    </div>
+  </div>`;
+}
+
+PAGE_RENDERERS.p4 = renderP4;
+
+/* ============================================================
+   MODAL OPENERS (add-entity forms)
+   ============================================================ */
+function openTaskModal(){
+  openFormModal({
+    title:'Add task', submitLabel:'Add task',
+    fields:[
+      {key:'title', label:'Task', type:'text', required:true, placeholder:'What needs doing?'},
+      {key:'category', label:'Area', type:'select', half:true, options:[{value:'work',label:'Work'},{value:'studies',label:'Studies'},{value:'personal',label:'Personal'}]},
+      {key:'priority', label:'Priority', type:'select', half:true, options:[{value:'high',label:'High'},{value:'med',label:'Medium'},{value:'low',label:'Low'}]},
+      {key:'tag', label:'Tag (optional)', type:'text', half:true, placeholder:"e.g. Master's"},
+      {key:'due', label:'Due date', type:'date', half:true, default:todayISO()},
+    ],
+    onSubmit(d){ cTasks.add({id:uid(), title:d.title, category:d.category, priority:d.priority, tag:d.tag, due:d.due||todayISO(), done:false}); toast('Task added'); }
+  });
+}
+function openTimelineModal(){
+  openFormModal({
+    title:'Add to timeline', submitLabel:'Add event',
+    fields:[
+      {key:'title', label:'Title', type:'text', required:true, placeholder:'Meeting, class or commitment'},
+      {key:'time', label:'Time', type:'time', half:true, default:'09:00'},
+      {key:'category', label:'Type', type:'select', half:true, options:[{value:'work',label:'Work'},{value:'class',label:'Class'},{value:'personal',label:'Personal'}]},
+      {key:'date', label:'Date', type:'date', default:todayISO()},
+    ],
+    onSubmit(d){ cTimeline.add({id:uid(), title:d.title, time:d.time||'09:00', category:d.category, date:d.date||todayISO()}); toast('Added to timeline'); }
+  });
+}
+function openQuickAttendanceModal(){
+  const all = [...state.p1.courses.map(c=>({...c,pillar:'p1'})), ...state.p2.courses.map(c=>({...c,pillar:'p2'}))];
+  if(!all.length){ toast('Add a course first'); return; }
+  openFormModal({
+    title:'Mark attendance', submitLabel:'Log it',
+    fields:[
+      {key:'course', label:'Course', type:'select', options: all.map(c=>({value:c.pillar+'::'+c.id, label:c.name}))},
+      {key:'status', label:'Status', type:'select', options:[{value:'present',label:'Present'},{value:'absent',label:'Absent'},{value:'excused',label:'Excused'}]},
+    ],
+    onSubmit(d){ const [pillar,id] = d.course.split('::'); markAttendance(pillar, id, d.status); }
+  });
+}
+function openQuickReadingModal(){
+  if(!state.p4.books.length){ toast('Add a book first'); return; }
+  openFormModal({
+    title:'Log reading', submitLabel:'Log pages',
+    fields:[
+      {key:'book', label:'Book', type:'select', options: state.p4.books.map(b=>({value:b.id, label:b.title}))},
+      {key:'pages', label:'Pages read', type:'number', default:10, min:1},
+    ],
+    onSubmit(d){
+      const b = cP4Books.find(d.book);
+      if(!b) return;
+      const pages = Number(d.pages)||0;
+      b.pagesRead = clamp(b.pagesRead + pages, 0, b.totalPages);
+      if(b.pagesRead>=b.totalPages) b.status='completed'; else if(b.status==='want') b.status='reading';
+      cLogs.add({id:uid(), type:'reading', text:`+${pages} pages — ${b.title}`, date:todayISO(), ts:Date.now()});
+    }
+  });
+}
+function openQuickNoteModal(){
+  openFormModal({
+    title:'Quick project note', submitLabel:'Save note',
+    fields:[ {key:'text', label:'Note', type:'textarea', required:true, placeholder:'Drop a quick thought before it slips away…'} ],
+    onSubmit(d){ cLogs.add({id:uid(), type:'note', text:d.text, date:todayISO(), ts:Date.now()}); }
+  });
+}
+function openCourseModal(pillar){
+  const isP1 = pillar==='p1';
+  openFormModal({
+    title: isP1 ? 'Add module' : 'Add class',
+    submitLabel:'Add',
+    fields:[
+      {key:'name', label: isP1 ? 'Module name' : 'Class name', type:'text', required:true},
+      {key:'code', label: isP1 ? 'Module code (optional)' : 'Reference (optional)', type:'text'},
+    ],
+    onSubmit(d){ (isP1?cP1Courses:cP2Courses).add({id:uid(), name:d.name, code:d.code, sessions:[]}); }
+  });
+}
+function openMaterialModal(){
+  openFormModal({
+    title:'Add material', submitLabel:'Add',
+    fields:[
+      {key:'title', label:'Title', type:'text', required:true},
+      {key:'category', label:'Category', type:'select', half:true, options:[{value:'Syllabus',label:'Syllabus'},{value:'Readings',label:'Readings'},{value:'Data Sets',label:'Data Sets'},{value:'Lecture Slides',label:'Lecture Slides'}]},
+      {key:'semester', label:'Semester', type:'text', half:true, placeholder:'Fall 2026'},
+      {key:'module', label:'Module', type:'text'},
+      {key:'link', label:'Link (optional)', type:'url'},
+    ],
+    onSubmit(d){ cP1Materials.add({id:uid(), title:d.title, category:d.category, semester:d.semester, module:d.module, link:d.link}); }
+  });
+}
+function openFeedModal(){
+  openFormModal({
+    title:'Add feed item', submitLabel:'Save',
+    fields:[
+      {key:'tag', label:'Tag', type:'select', half:true, options:[{value:'Policy',label:'Policy'},{value:'Research',label:'Research'},{value:'Climate Action',label:'Climate Action'},{value:'News',label:'News'}]},
+      {key:'date', label:'Date', type:'date', half:true, default:todayISO()},
+      {key:'title', label:'Title', type:'text', required:true},
+      {key:'source', label:'Source', type:'text'},
+      {key:'summary', label:'Summary', type:'textarea'},
+      {key:'url', label:'Link (optional)', type:'url'},
+    ],
+    onSubmit(d){ cP1Feed.add({id:uid(), tag:d.tag, title:d.title, source:d.source, summary:d.summary, url:d.url, date:d.date||todayISO()}); }
+  });
+}
+function openMemoModal(){
+  openFormModal({
+    title:'Add memorization item', submitLabel:'Add',
+    fields:[
+      {key:'item', label:'Text / passage', type:'text', required:true, placeholder:'e.g. Surah Al-Mulk'},
+      {key:'totalUnits', label:'Total units (verses/pages)', type:'number', half:true, default:10, min:1},
+      {key:'completedUnits', label:'Completed so far', type:'number', half:true, default:0, min:0},
+      {key:'intervalDays', label:'Revision interval (days)', type:'number', default:3, min:1},
+    ],
+    onSubmit(d){ cP2Memo.add({id:uid(), item:d.item, totalUnits:Number(d.totalUnits)||1, completedUnits:Number(d.completedUnits)||0, intervalDays:Number(d.intervalDays)||3, lastRevised:todayISO()}); }
+  });
+}
+function openChecklistModal(){
+  openFormModal({
+    title:'Add checklist item', submitLabel:'Add',
+    fields:[ {key:'text', label:'Item', type:'text', required:true, placeholder:'e.g. Review past papers'} ],
+    onSubmit(d){ cP2Checklist.add({id:uid(), text:d.text, done:false}); }
+  });
+}
+function openP2NoteModal(){
+  openFormModal({
+    title:'Add lecture note', submitLabel:'Save',
+    fields:[
+      {key:'title', label:'Title', type:'text', required:true},
+      {key:'week', label:'Week', type:'text', half:true, placeholder:'Week 7'},
+      {key:'date', label:'Date', type:'date', half:true, default:todayISO()},
+      {key:'takeaways', label:'Key takeaways', type:'textarea'},
+      {key:'audioLink', label:'Audio / recording link (optional)', type:'url'},
+    ],
+    onSubmit(d){ cP2Notes.add({id:uid(), title:d.title, week:d.week, takeaways:d.takeaways, audioLink:d.audioLink, date:d.date||todayISO()}); }
+  });
+}
+function openProgramModal(){
+  openFormModal({
+    title:'Add SDG program', submitLabel:'Add',
+    fields:[
+      {key:'name', label:'Program name', type:'text', required:true},
+      {key:'date', label:'Date', type:'date', half:true, default:todayISO()},
+      {key:'status', label:'Status', type:'select', half:true, options:[{value:'planning',label:'Planning'},{value:'confirmed',label:'Confirmed'},{value:'completed',label:'Completed'}]},
+      {key:'audience', label:'Audience', type:'text', placeholder:'e.g. Grades 7–9, 60 students'},
+      {key:'sdgs', label:'SDG numbers (comma separated, 1–17)', type:'text', placeholder:'e.g. 4, 13, 14'},
+    ],
+    onSubmit(d){
+      const sdgs = String(d.sdgs).split(',').map(s=>parseInt(s.trim(),10)).filter(n=>n>=1&&n<=17);
+      cP3Programs.add({id:uid(), name:d.name, date:d.date||todayISO(), status:d.status, audience:d.audience, sdgs});
+    }
+  });
+}
+function openEvent3Modal(){
+  openFormModal({
+    title:'Add event', submitLabel:'Add',
+    fields:[
+      {key:'name', label:'Event name', type:'text', required:true},
+      {key:'date', label:'Date', type:'date', half:true, default:todayISO()},
+      {key:'prep', label:'Prep status', type:'select', half:true, options:[{value:'not-started',label:'Not started'},{value:'in-progress',label:'In progress'},{value:'ready',label:'Ready'}]},
+      {key:'partner', label:'Partner', type:'text', half:true},
+      {key:'speaker', label:'Speaker', type:'text', half:true},
+    ],
+    onSubmit(d){ cP3Events.add({id:uid(), name:d.name, date:d.date||todayISO(), partner:d.partner, speaker:d.speaker, prep:d.prep}); }
+  });
+}
+function openDeliverableModal(){
+  openFormModal({
+    title:'Add deliverable', submitLabel:'Add',
+    fields:[
+      {key:'title', label:'Title', type:'text', required:true},
+      {key:'bucket', label:'Status', type:'select', half:true, options:DELIV_BUCKETS.map(b=>({value:b.id,label:b.label}))},
+      {key:'due', label:'Due date', type:'date', half:true, default:todayISO()},
+    ],
+    onSubmit(d){ cP3Deliv.add({id:uid(), title:d.title, bucket:d.bucket, due:d.due||todayISO()}); }
+  });
+}
+function openCrochetModal(){
+  openFormModal({
+    title:'Add craft project', submitLabel:'Add',
+    fields:[
+      {key:'name', label:'Project name', type:'text', required:true},
+      {key:'hook', label:'Hook size', type:'text', half:true, placeholder:'4.5mm'},
+      {key:'totalRows', label:'Total rows', type:'number', half:true, default:20, min:1},
+      {key:'yarn', label:'Yarn', type:'text', placeholder:'Fibre, colour, amount'},
+      {key:'status', label:'Status', type:'select', options:[{value:'planned',label:'Planned'},{value:'in progress',label:'In progress'},{value:'completed',label:'Completed'}]},
+      {key:'notes', label:'Notes (optional)', type:'textarea'},
+    ],
+    onSubmit(d){ cP4Crochet.add({id:uid(), name:d.name, hook:d.hook, yarn:d.yarn, totalRows:Number(d.totalRows)||1, rows:0, status:d.status, notes:d.notes}); }
+  });
+}
+function openQuranModal(){
+  openFormModal({
+    title:'Add surah to memorize', submitLabel:'Add',
+    fields:[
+      {key:'surah', label:'Surah / passage', type:'text', required:true, placeholder:"e.g. Surah Al-Mulk"},
+      {key:'totalVerses', label:'Total verses', type:'number', half:true, default:10, min:1},
+      {key:'memorizedVerses', label:'Memorized so far', type:'number', half:true, default:0, min:0},
+      {key:'intervalDays', label:'Revision interval (days)', type:'number', default:3, min:1},
+    ],
+    onSubmit(d){ cP4Quran.add({id:uid(), surah:d.surah, totalVerses:Number(d.totalVerses)||1, memorizedVerses:Number(d.memorizedVerses)||0, intervalDays:Number(d.intervalDays)||3, lastRevised:todayISO()}); }
+  });
+}
+function openBookModal(){
+  openFormModal({
+    title:'Add book', submitLabel:'Add',
+    fields:[
+      {key:'title', label:'Title', type:'text', required:true},
+      {key:'author', label:'Author', type:'text'},
+      {key:'totalPages', label:'Total pages', type:'number', half:true, default:200, min:1},
+      {key:'status', label:'Status', type:'select', half:true, options:[{value:'want',label:'Want to Read'},{value:'reading',label:'Reading'},{value:'completed',label:'Completed'}]},
+    ],
+    onSubmit(d){ cP4Books.add({id:uid(), title:d.title, author:d.author, totalPages:Number(d.totalPages)||1, pagesRead: d.status==='completed'?Number(d.totalPages)||1:0, status:d.status, quotes:[]}); }
+  });
+}
+function openQuoteModal(bookId){
+  openFormModal({
+    title:'Save a quote', submitLabel:'Save',
+    fields:[
+      {key:'text', label:'Quote', type:'textarea', required:true},
+      {key:'page', label:'Page (optional)', type:'text', placeholder:'p.42'},
+    ],
+    onSubmit(d){ const b = cP4Books.find(bookId); if(!b) return; b.quotes.push({id:uid(), text:d.text, page:d.page}); commit(); }
+  });
+}
+function openEvent4Modal(){
+  openFormModal({
+    title:'Add event', submitLabel:'Add',
+    fields:[
+      {key:'title', label:'Event title', type:'text', required:true},
+      {key:'date', label:'Date', type:'date', half:true, default:todayISO()},
+      {key:'type', label:'Role', type:'select', half:true, options:[{value:'attend',label:'Attending'},{value:'host',label:'Hosting / speaking'}]},
+      {key:'prep', label:'Prep notes / speech outline', type:'textarea'},
+    ],
+    onSubmit(d){ cP4Events.add({id:uid(), title:d.title, date:d.date||todayISO(), type:d.type, prep:d.prep}); }
+  });
+}
+function openSocialModal(){
+  openFormModal({
+    title:'Add content idea', submitLabel:'Add',
+    fields:[
+      {key:'platform', label:'Platform', type:'select', half:true, options:[{value:'linkedin',label:'LinkedIn'},{value:'instagram',label:'Instagram'}]},
+      {key:'date', label:'Target date', type:'date', half:true, default:todayISO()},
+      {key:'caption', label:'Caption', type:'textarea', required:true},
+      {key:'hashtags', label:'Hashtags', type:'text', placeholder:'#Sustainability, #Bahrain'},
+      {key:'status', label:'Status', type:'select', options:SOCIAL_STATUS_ORDER.map(s=>({value:s,label:SOCIAL_STATUS_LABEL[s]}))},
+    ],
+    onSubmit(d){ cP4Social.add({id:uid(), platform:d.platform, date:d.date||todayISO(), caption:d.caption, hashtags:d.hashtags, status:d.status}); }
+  });
+}
+
+/* ============================================================
+   DOMAIN ACTIONS
+   ============================================================ */
+function markAttendance(pillar, courseId, status){
+  const c = (pillar==='p1'?cP1Courses:cP2Courses).find(courseId);
+  if(!c) return;
+  const T = todayISO();
+  const existing = c.sessions.find(s=>s.date===T);
+  if(existing) existing.status = status; else c.sessions.push({date:T, status});
+  cLogs.add({id:uid(), type:'attendance', text:`${status[0].toUpperCase()+status.slice(1)} — ${c.name}`, date:T, ts:Date.now()});
+}
+
+/* ============================================================
+   ACTION DISPATCH
+   ============================================================ */
+const QUICK_ADD_OPENER = { dashboard:openTaskModal, p1:()=>openCourseModal('p1'), p2:()=>openCourseModal('p2'), p3:openProgramModal, p4:openCrochetModal };
+
+const ACTIONS = {
+  'nav'(el){ state.activePage = el.dataset.page; document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); commit(); window.scrollTo(0,0); },
+  'toggle-sidebar'(){ document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); },
+  'toggle-theme'(){ state.theme = state.theme==='dark' ? 'light' : 'dark'; commit(); },
+  'quick-add'(){ (QUICK_ADD_OPENER[state.activePage]||openTaskModal)(); },
+
+  'toggle-task'(el){ const t = cTasks.find(el.dataset.id); if(t) cTasks.update(t.id,{done:!t.done}); },
+  'delete-task'(el){ cTasks.remove(el.dataset.id); },
+  'delete-timeline'(el){ cTimeline.remove(el.dataset.id); },
+  'quick-log-attendance'(){ openQuickAttendanceModal(); },
+  'quick-log-reading'(){ openQuickReadingModal(); },
+  'quick-log-note'(){ openQuickNoteModal(); },
+
+  'add-course'(el){ openCourseModal(el.dataset.pillar); },
+  'mark-attendance'(el){ markAttendance(el.dataset.pillar, el.dataset.id, el.dataset.status); },
+  'delete-course'(el){
+    const c = (el.dataset.pillar==='p1'?cP1Courses:cP2Courses).find(el.dataset.id);
+    confirmAction({ title:'Remove module?', message:`"${c?c.name:'This module'}" and its attendance history will be deleted.`,
+      onConfirm(){ (el.dataset.pillar==='p1'?cP1Courses:cP2Courses).remove(el.dataset.id); } });
+  },
+  'edit-thesis-notes'(el){
+    const m = state.p1.thesis.milestones.find(x=>x.id===el.dataset.id);
+    openFormModal({ title:`Notes — ${m.name}`, submitLabel:'Save',
+      fields:[{key:'notes', label:'Notes', type:'textarea', default:m.notes}],
+      onSubmit(d){ m.notes = d.notes; commit(); } });
+  },
+  'add-material'(){ openMaterialModal(); },
+  'delete-material'(el){ cP1Materials.remove(el.dataset.id); },
+  'add-feed'(){ openFeedModal(); },
+  'delete-feed'(el){ cP1Feed.remove(el.dataset.id); },
+
+  'add-memo'(){ openMemoModal(); },
+  'delete-memo'(el){ cP2Memo.remove(el.dataset.id); },
+  'memo-revised'(el){ cP2Memo.update(el.dataset.id, {lastRevised:todayISO()}); toast('Marked as revised'); },
+  'memo-progress'(el){ const m = cP2Memo.find(el.dataset.id); if(m) cP2Memo.update(m.id, {completedUnits: clamp(m.completedUnits+1,0,m.totalUnits)}); },
+  'add-checklist-item'(){ openChecklistModal(); },
+  'toggle-checklist'(el){ const it = cP2Checklist.find(el.dataset.id); if(it) cP2Checklist.update(it.id,{done:!it.done}); },
+  'delete-checklist'(el){ cP2Checklist.remove(el.dataset.id); },
+  'add-note'(){ openP2NoteModal(); },
+  'delete-note'(el){ cP2Notes.remove(el.dataset.id); },
+
+  'add-program'(){ openProgramModal(); },
+  'delete-program'(el){ cP3Programs.remove(el.dataset.id); },
+  'add-event3'(){ openEvent3Modal(); },
+  'delete-event3'(el){ cP3Events.remove(el.dataset.id); },
+  'add-deliverable'(){ openDeliverableModal(); },
+  'delete-deliverable'(el){ cP3Deliv.remove(el.dataset.id); },
+
+  'add-crochet'(){ openCrochetModal(); },
+  'delete-crochet'(el){ cP4Crochet.remove(el.dataset.id); },
+  'crochet-inc'(el){ const c = cP4Crochet.find(el.dataset.id); if(c) cP4Crochet.update(c.id,{rows: clamp(c.rows+1,0,c.totalRows)}); },
+  'crochet-dec'(el){ const c = cP4Crochet.find(el.dataset.id); if(c) cP4Crochet.update(c.id,{rows: clamp(c.rows-1,0,c.totalRows)}); },
+  'add-quran'(){ openQuranModal(); },
+  'delete-quran'(el){ cP4Quran.remove(el.dataset.id); },
+  'quran-revised'(el){ cP4Quran.update(el.dataset.id, {lastRevised:todayISO()}); toast('Marked as revised'); },
+  'quran-progress'(el){ const m = cP4Quran.find(el.dataset.id); if(m) cP4Quran.update(m.id, {memorizedVerses: clamp(m.memorizedVerses+1,0,m.totalVerses)}); },
+  'add-book'(){ openBookModal(); },
+  'delete-book'(el){ cP4Books.remove(el.dataset.id); },
+  'book-progress'(el){
+    const b = cP4Books.find(el.dataset.id); if(!b) return;
+    const delta = Number(el.dataset.delta)||0;
+    const pagesRead = clamp(b.pagesRead+delta, 0, b.totalPages);
+    const status = pagesRead>=b.totalPages ? 'completed' : (b.status==='want' && pagesRead>0 ? 'reading' : b.status);
+    cP4Books.update(b.id, {pagesRead, status});
+  },
+  'add-quote'(el){ openQuoteModal(el.dataset.id); },
+  'add-event4'(){ openEvent4Modal(); },
+  'delete-event4'(el){ cP4Events.remove(el.dataset.id); },
+  'add-social'(){ openSocialModal(); },
+  'delete-social'(el){ cP4Social.remove(el.dataset.id); },
+  'social-status'(el){
+    const s = cP4Social.find(el.dataset.id); if(!s) return;
+    const idx = SOCIAL_STATUS_ORDER.indexOf(s.status);
+    cP4Social.update(s.id, {status: SOCIAL_STATUS_ORDER[(idx+1)%SOCIAL_STATUS_ORDER.length]});
+  },
+};
+
+const CHANGE_ACTIONS = {
+  'thesis-status'(el){ const m = state.p1.thesis.milestones.find(x=>x.id===el.dataset.id); if(m){ m.status = el.value; commit(); } },
+  'deliverable-bucket'(el){ cP3Deliv.update(el.dataset.id, {bucket: el.value}); },
+};
+
+document.addEventListener('click', (e)=>{
+  const el = e.target.closest('[data-action]');
+  if(!el) return;
+  const fn = ACTIONS[el.dataset.action];
+  if(fn) fn(el);
+});
+document.addEventListener('change', (e)=>{
+  const el = e.target.closest('[data-action]');
+  if(!el) return;
+  const fn = CHANGE_ACTIONS[el.dataset.action];
+  if(fn) fn(el);
+});
+
+/* delete confirmations for simple single-array items (wrap risky deletes) */
+['delete-material','delete-feed','delete-memo','delete-checklist','delete-note','delete-program','delete-event3','delete-deliverable','delete-crochet','delete-quran','delete-book','delete-event4','delete-social','delete-task','delete-timeline'].forEach(actionName=>{
+  const original = ACTIONS[actionName];
+  ACTIONS[actionName] = function(el){
+    confirmAction({ title:'Delete this?', message:'This action cannot be undone.', onConfirm(){ original(el); } });
+  };
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+render();
+</script>
+</body>
+</html>
